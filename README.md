@@ -2,6 +2,8 @@
 
 consola de baile
 
+## USO NODE 18.18.0
+
 ## Install the dependencies
 ```bash
 yarn

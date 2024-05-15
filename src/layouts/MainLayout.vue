@@ -12,10 +12,10 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Consola de baile
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>Microprogramacion</div>
       </q-toolbar>
     </q-header>
 

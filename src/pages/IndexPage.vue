@@ -164,7 +164,7 @@ function cambiarModoOscuro () {
 onMounted(() => {
   console.log('estoy aqui en onMounted')
   // conectarme a mqtt con localhost puerto 9001 y main topic BAILE
-
+console.log($mqtt.status())
   setTimeout(() => {
     $mqtt.subscribe('BAILE', 'Qr', (message) => {
     console.log('estoy aqui en onMounted')

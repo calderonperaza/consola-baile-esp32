@@ -1,3 +1,6 @@
+<!-- eslint-disable no-unreachable -->
+<!-- eslint-disable no-unreachable -->
+<!-- eslint-disable no-unreachable -->
 <template>
   <q-page class="q-ma-md">
     <div class="row q-ma-md">
@@ -42,9 +45,33 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-3">
+          <div class="col-4" >
+            Música <br />
             <q-btn size="sm" icon="play_arrow" color="green" @click="cancion.play()" />
             <q-btn size="sm" icon="pause" color="green" @click="cancion.pause()" />
+
+          </div>
+          <div class="col-3">MQTT: {{ statusMqtt }}</div>
+
+        </div>
+        <!-- Fila de la consola de mensajes, mostramos un control con scroll que muestra las colamensajes -->
+        <div class="row">
+          <div class="col-10">
+            <div class="text-h6 inline">Consola de mensajes</div>
+            <q-card class="my-card q-ma-none">
+              <q-card-section  >
+                <q-scroll-area style="height: 300px" class="q-ma-none">
+                  <q-list  dense>
+                    <q-item  class="q-ma-none"
+                      v-for="(mensaje, index) in colaMensajesOrdenados"
+                      :key="index"
+                    >
+                      <q-item-section >{{ mensaje }}</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-scroll-area>
+              </q-card-section>
+            </q-card>
           </div>
         </div>
       </div>
@@ -80,7 +107,8 @@ import { useQuasar } from 'quasar'
 import { $mqtt } from 'vue-paho-mqtt'
 
 const $q = useQuasar()
-
+const colaMensajes = ref([])
+const colaMensajesOrdenados = computed(() => [...colaMensajes.value].reverse())
 const numPasos = ref(10)
 const delay = ref(1000)
 const cancion = new Audio('captainJack.mp3')
@@ -102,6 +130,9 @@ const equiposOrdenados = computed(() => {
 })
 const modoDark = computed(() => {
   return $q.dark.isActive
+})
+const statusMqtt = computed(() => {
+  return $mqtt.status()
 })
 
 function generarAleatorio () {
@@ -128,6 +159,7 @@ function generarAleatorio () {
   }
   console.log(delay.value + ',' + cadena)
   $mqtt.publish('BAILE', delay.value + ',' + cadena, 'Qr')
+  colaMensajes.value.push(delay.value + ',' + cadena)
 }
 
 function ponerOffline () {
@@ -147,10 +179,37 @@ onMounted(() => {
     if ($mqtt.status() === 'connected') {
       console.log('me suscribo a BAILE/EQUIPOS')
       $mqtt.subscribe('EQUIPOS', (message) => {
-        //  console.log('mensaje')
-        console.log(message)
+        console.log('mensaje recibido ' + message)
+        const mensaje = message.toString().toUpperCase()
+        console.log(mensaje)
+        procesarMensaje(mensaje)
       })
     }
   }, 3000)
 })
+
+function procesarMensaje (mensaje) {
+  try {
+    colaMensajes.value.push(mensaje)
+    if (mensaje.includes(',')) {
+      console.log('incluye coma')
+      const [nombre, puntos] = mensaje.split(',')
+      const equipo = equipos.value.find((equipo) => equipo.nombre.toUpperCase() === nombre)
+      if (equipo) {
+        equipo.puntos += parseInt(puntos)
+        equipo.online = true
+      }
+    } else {
+      console.log('no incluye coma')
+      const equipo = equipos.value.find((equipo) => equipo.nombre.toUpperCase() === mensaje)
+      if (equipo) {
+        equipo.online = true
+      }
+    }
+  } catch (error) {
+    console.log('Error al procesar mensaje')
+    console.log(mensaje)
+    console.log(error)
+  }
+}
 </script>

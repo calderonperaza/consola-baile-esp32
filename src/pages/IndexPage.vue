@@ -145,7 +145,7 @@ onMounted(() => {
   setTimeout(() => {
     console.log($mqtt.status())
     if ($mqtt.status() === 'connected') {
-      console.log('entre al if')
+      console.log('me suscribo a BAILE/EQUIPOS')
       $mqtt.subscribe('EQUIPOS', (message) => {
         //  console.log('mensaje')
         console.log(message)

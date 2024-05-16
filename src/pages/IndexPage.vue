@@ -165,11 +165,15 @@ onMounted(() => {
   console.log('estoy aqui en onMounted')
   // conectarme a mqtt con localhost puerto 9001 y main topic BAILE
 
-  // suscribirse al topic BAILE/BAILE y cuando llegue un mensaje imprimirlo en consola
-  $mqtt.subscribe('BAILE/BAILE', 'Qr', (message) => {
+  setTimeout(() => {
+    $mqtt.subscribe('BAILE', 'Qr', (message) => {
     console.log('estoy aqui en onMounted')
     console.log(message.payloadString)
   })
+  }, 200);
+
+  // suscribirse al topic BAILE/BAILE y cuando llegue un mensaje imprimirlo en consola
+  
 })
 
 </script>

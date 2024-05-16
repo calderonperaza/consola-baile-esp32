@@ -1,13 +1,13 @@
 <template>
-  <q-page class="q-ma-md" >
+  <q-page class="q-ma-md">
     <div class="row q-ma-md">
-      <div class="col-4 ">
+      <div class="col-4">
         <div class="text-h6 inline">Generacion de Aleatorio</div>
 
         <div class="row">
           <div class="col-4">
             <div class="caption">Numero de pasos</div>
-                <q-input
+            <q-input
               v-model.number="numPasos"
               type="number"
               filled
@@ -16,7 +16,7 @@
           </div>
           <div class="col-4">
             <div class="caption">Delay del tiempo</div>
-                <q-input
+            <q-input
               v-model.number="delay"
               type="number"
               filled
@@ -25,73 +25,52 @@
           </div>
 
           <div class="col-4 q-mt-lg">
-            <q-btn
-              label="Iniciar"
-              color="primary"
-              @click="generarAleatorio"
-            />
+            <q-btn label="Iniciar" color="primary" @click="generarAleatorio" />
           </div>
         </div>
         <div class="row q-my-md">
           <div class="col-3">
             <q-btn
-            size="sm"
+              size="sm"
               label="Poner offline"
               color="primary"
               @click="ponerOffline"
             />
           </div>
           <div class="col-4">
-            <q-toggle
-        v-model="modoDark"
-        label="Modo Oscuro"
-        @click="cambiarModoOscuro"
-      />
-    </div>
+            <q-toggle v-model="modoDark" label="Modo Oscuro" @click="cambiarModoOscuro" />
+          </div>
         </div>
         <div class="row">
           <div class="col-3">
-        <q-btn
-        size="sm"
-        icon="play_arrow"
-        color="green"
-        @click="cancion.play()"
-      />
-      <q-btn
-        size="sm"
-        icon="pause"
-        color="green"
-        @click="cancion.pause()"
-      />
-
-      </div>
-
+            <q-btn size="sm" icon="play_arrow" color="green" @click="cancion.play()" />
+            <q-btn size="sm" icon="pause" color="green" @click="cancion.pause()" />
+          </div>
         </div>
       </div>
 
-      <div class="col-8 ">
-
+      <div class="col-8">
         <div class="text-h6 inline">Resultados</div>
         <div class="q-pa-md row items-start q-gutter-md">
-        <q-card class="my-card q-mt-lg"
-         v-for="(equipo, index) in equiposOrdenados" :key="index">
-          <q-card-section class="bg-primary text-white">
-            <div class="text-h4 q-ma-md">{{equipo.nombre}}</div>
+          <q-card
+            class="my-card q-mt-lg"
+            v-for="(equipo, index) in equiposOrdenados"
+            :key="index"
+          >
+            <q-card-section class="bg-primary text-white">
+              <div class="text-h4 q-ma-md">{{ equipo.nombre }}</div>
+            </q-card-section>
 
-          </q-card-section>
+            <q-separator />
 
-          <q-separator />
-
-          <q-card-actions align="around">
-            <q-btn round size="xs" color="green" v-show="equipo.online" ></q-btn>
-            <div class="text-h3">{{equipo.puntos}}</div>
-          </q-card-actions>
-        </q-card>
+            <q-card-actions align="around">
+              <q-btn round size="xs" color="green" v-show="equipo.online"></q-btn>
+              <div class="text-h3">{{ equipo.puntos }}</div>
+            </q-card-actions>
+          </q-card>
+        </div>
       </div>
-      </div>
-
     </div>
-
   </q-page>
 </template>
 
@@ -152,7 +131,7 @@ function generarAleatorio () {
 }
 
 function ponerOffline () {
-  equipos.value.forEach(equipo => {
+  equipos.value.forEach((equipo) => {
     equipo.online = false
   })
 }
@@ -162,18 +141,16 @@ function cambiarModoOscuro () {
 }
 
 onMounted(() => {
-  console.log('estoy aqui en onMounted')
-  // conectarme a mqtt con localhost puerto 9001 y main topic BAILE
-console.log($mqtt.status())
+  console.log('estoy aqui')
   setTimeout(() => {
-    $mqtt.subscribe('BAILE', 'Qr', (message) => {
-    console.log('estoy aqui en onMounted')
-    console.log(message.payloadString)
-  })
-  }, 200);
-
-  // suscribirse al topic BAILE/BAILE y cuando llegue un mensaje imprimirlo en consola
-  
+    console.log($mqtt.status())
+    if ($mqtt.status() === 'connected') {
+      console.log('entre al if')
+      $mqtt.subscribe('EQUIPOS', (message) => {
+        //  console.log('mensaje')
+        console.log(message)
+      })
+    }
+  }, 3000)
 })
-
 </script>

@@ -41,13 +41,31 @@
               @click="ponerOffline"
             />
           </div>
-          <div class="col-3">
+          <div class="col-4">
             <q-toggle
         v-model="modoDark"
         label="Modo Oscuro"
         @click="cambiarModoOscuro"
       />
-          </div>
+    </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+        <q-btn
+        size="sm"
+        icon="play_arrow"
+        color="green"
+        @click="cancion.play()"
+      />
+      <q-btn
+        size="sm"
+        icon="pause"
+        color="green"
+        @click="cancion.pause()"
+      />
+
+      </div>
+
         </div>
       </div>
 
@@ -78,14 +96,15 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
+import { $mqtt } from 'vue-paho-mqtt'
 
 const $q = useQuasar()
 
 const numPasos = ref(10)
 const delay = ref(1000)
-
+const cancion = new Audio('captainJack.mp3')
 const equipos = ref([
   { nombre: 'Namekusei', puntos: 0, online: true },
   { nombre: 'Androides', puntos: 4, online: true },
@@ -129,6 +148,7 @@ function generarAleatorio () {
     }
   }
   console.log(delay.value + ',' + cadena)
+  $mqtt.publish('BAILE', delay.value + ',' + cadena, 'Qr')
 }
 
 function ponerOffline () {
@@ -140,5 +160,16 @@ function ponerOffline () {
 function cambiarModoOscuro () {
   $q.dark.set(!modoDark.value)
 }
+
+onMounted(() => {
+  console.log('estoy aqui en onMounted')
+  // conectarme a mqtt con localhost puerto 9001 y main topic BAILE
+
+  // suscribirse al topic BAILE/BAILE y cuando llegue un mensaje imprimirlo en consola
+  $mqtt.subscribe('BAILE/BAILE', 'Qr', (message) => {
+    console.log('estoy aqui en onMounted')
+    console.log(message.payloadString)
+  })
+})
 
 </script>

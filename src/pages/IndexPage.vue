@@ -109,7 +109,7 @@ import { $mqtt } from 'vue-paho-mqtt'
 const $q = useQuasar()
 const colaMensajes = ref([])
 const colaMensajesOrdenados = computed(() => [...colaMensajes.value].reverse())
-const numPasos = ref(10)
+const numPasos = ref(15)
 const delay = ref(1000)
 const cancion = new Audio('captainJack.mp3')
 const equipos = ref([

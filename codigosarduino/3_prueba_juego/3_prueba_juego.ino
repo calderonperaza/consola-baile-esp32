@@ -15,13 +15,15 @@ uint32_t colorD=pantalla.Color(0, 0, 255); //color azul
 bool start=true;
 
 int tiempo=800;
-//OJO EL TAMAÑO NO ES DINAMICO SINO QUE DEBE EDITARSE 16 en blanco mas los 10 de la cancion +1 en blanco
-#define MAXCANCION 27
-char cancion[]="LUDURDDLDU";  //10 pasos
+//OJO EL TAMAÑO NO ES DINAMICO SINO QUE DEBE EDITARSE
+// 16 en blanco antes y 16 despues mas los 15 pasos de la cancion
+#define MAXCANCION 47
+char cancion[]="LUDURDDLDULLRLD";  //15 pasos por turno
 bool cancionBailada[MAXCANCION][4];
 int contador=0;
 
 void setup(){
+  Serial.begin(9600);
   pantalla.begin(); //inicializamos
   pantalla.show();  // Turn OFF all pixels ASAP
   pantalla.setBrightness(20);// Set BRIGHTNESS to about 1/5 (max = 255)
@@ -56,7 +58,7 @@ void loop(){
       delay(tiempo);
       contador++;
       //LA CANCION SOLO TIENE 10 MOVIMIENTOS
-      if(contador==10){
+      if(contador==sizeof(cancion)){
         start=false;
       }
     }// fin de start == true
@@ -73,7 +75,8 @@ void configurarMatriz(){
     }
   }
   //ahora llenamos la matriz
-  for(int i=0; i<10; i++){
+  Serial.println(sizeof(cancion));
+  for(int i=0; i<sizeof(cancion); i++){
     switch(cancion[i]){
       case 'L':
         cancionBailada[15+i][0]=true;

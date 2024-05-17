@@ -1,4 +1,4 @@
-//VAMOS A PROBAR LA PANTALLA Y LA ALFOMBRA DEL JUEGO
+//VAMOS A PROBAR LA pantalla1 Y LA ALFOMBRA DEL JUEGO
 //TENDREMOS UNA CANCION DE BAILE DEFINIDA DE FORMA FIJA
 #include <Adafruit_NeoPixel.h>
 #define PIN 14  //pin de la Wemos esp32 para data
@@ -8,13 +8,13 @@
 #define DOWN 26
 #define NUMPIXELS 64
 
-Adafruit_NeoPixel pantalla(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pantalla1(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-//COLORES DE LAS FILAS DE LA PANTALLA
-uint32_t colorL=pantalla.Color(255, 0, 0); //color rojo
-uint32_t colorU=pantalla.Color(255, 255, 0); //color amarillo
-uint32_t colorR=pantalla.Color(0, 255, 0); //color verde
-uint32_t colorD=pantalla.Color(0, 0, 255); //color azul
+//COLORES DE LAS FILAS DE LA pantalla1
+uint32_t colorL=pantalla1.Color(255, 0, 0); //color rojo
+uint32_t colorU=pantalla1.Color(255, 255, 0); //color amarillo
+uint32_t colorR=pantalla1.Color(0, 255, 0); //color verde
+uint32_t colorD=pantalla1.Color(0, 0, 255); //color azul
 
 //VARIABLES Y BANDERAS
 bool start=true;
@@ -39,37 +39,37 @@ void setup(){
   attachInterrupt(UP,isrup,RISING);
   attachInterrupt(RIGHT,isrright,RISING);
   attachInterrupt(DOWN,isrdown,RISING);
-  pantalla.begin(); //inicializamos
-  pantalla.show();  // Turn OFF all pixels ASAP
-  pantalla.setBrightness(20);// Set BRIGHTNESS to about 1/5 (max = 255)
+  pantalla1.begin(); //inicializamos
+  pantalla1.show();  // Turn OFF all pixels ASAP
+  pantalla1.setBrightness(20);// Set BRIGHTNESS to about 1/5 (max = 255)
   configurarMatriz();
 }
 
 void loop(){
-    pantalla.clear();
-    pantalla.show();
+    pantalla1.clear();
+    pantalla1.show();
     if(start){
       for(int i=0; i<16; i++){
         for(int j=0; j<4; j++){
           if(cancionBailada[contador+i][j]){
             switch(j){
               case 0:
-                pantalla.setPixelColor(i,colorL);
+                pantalla1.setPixelColor(i,colorL);
                 break;
               case 1:
-                pantalla.setPixelColor(i+16,colorU);
+                pantalla1.setPixelColor(i+16,colorU);
                 break;
               case 2:
-                pantalla.setPixelColor(i+32,colorR);
+                pantalla1.setPixelColor(i+32,colorR);
                 break;
               case 3:
-                pantalla.setPixelColor(i+48,colorD);
+                pantalla1.setPixelColor(i+48,colorD);
                 break;
             }
           }
         }
       }
-      pantalla.show();
+      pantalla1.show();
       delay(tiempo);
       contador++;
       //nos salimos cuando hemos recorrido las filas de la cancion +16
@@ -112,7 +112,7 @@ void configurarMatriz(){
 void isrleft(){
   //Serial.println("LEFT");
   if(start){
-    if(pantalla.getPixelColor(0)==colorL){
+    if(pantalla1.getPixelColor(0)==colorL){
       puntos++;
     }
   }else{
@@ -124,7 +124,7 @@ void isrleft(){
 void isrup(){
   //Serial.println("UP");
   if(start){
-    if(pantalla.getPixelColor(16)==colorU){
+    if(pantalla1.getPixelColor(16)==colorU){
       puntos++;
     }
   }else{
@@ -135,7 +135,7 @@ void isrup(){
 void isrright(){
   //Serial.println("RIGHT");
   if(start){
-    if(pantalla.getPixelColor(32)==colorR){
+    if(pantalla1.getPixelColor(32)==colorR){
       puntos++;
     }
   }else{
@@ -146,7 +146,7 @@ void isrright(){
 void isrdown(){
   Serial.println("DOWN");
   if(start){
-    if(pantalla.getPixelColor(48)==colorD){
+    if(pantalla1.getPixelColor(48)==colorD){
       puntos++;
     }
   }else{
@@ -160,7 +160,10 @@ void reportarseOnline(){
 
 void terminarJuego(){
   Serial.println("PUNTOS DEL EQUIPO");
-  Serial.println(equipo +"," + puntos);
+  //imprimo la cadena de texto = equipo + ',' + puntos
+  Serial.print(equipo);
+  Serial.print(",");
+  Serial.println(puntos);
   puntos=0;
   start=false;
 }

@@ -2,7 +2,12 @@
 //TENDREMOS UNA CANCION DE BAILE DEFINIDA DE FORMA FIJA
 #include <Adafruit_NeoPixel.h>
 #define PIN 14  //pin de la Wemos esp32 para data
+#define LEFT 16
+#define UP 17
+#define RIGHT 25
+#define DOWN 26
 #define NUMPIXELS 64
+
 Adafruit_NeoPixel pantalla(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 //COLORES DE LAS FILAS DE LA PANTALLA
@@ -13,7 +18,8 @@ uint32_t colorD=pantalla.Color(0, 0, 255); //color azul
 
 //VARIABLES Y BANDERAS
 bool start=true;
-
+char equipo[]="PIKORO";
+volatile int puntos=0;
 int tiempo=800;
 //OJO EL TAMAÑO NO ES DINAMICO SINO QUE DEBE EDITARSE
 // 16 en blanco antes y 16 despues mas los 15 pasos de la cancion
@@ -24,7 +30,15 @@ bool cancionBailada[MAXCANCION][4];
 int contador=0;
 
 void setup(){
+  pinMode(LEFT,INPUT);
+  pinMode(UP,INPUT);
+  pinMode(RIGHT,INPUT);
+  pinMode(DOWN,INPUT);
   Serial.begin(9600);
+  attachInterrupt(LEFT,isrleft,RISING);
+  attachInterrupt(UP,isrup,RISING);
+  attachInterrupt(RIGHT,isrright,RISING);
+  attachInterrupt(DOWN,isrdown,RISING);
   pantalla.begin(); //inicializamos
   pantalla.show();  // Turn OFF all pixels ASAP
   pantalla.setBrightness(20);// Set BRIGHTNESS to about 1/5 (max = 255)
@@ -58,9 +72,9 @@ void loop(){
       pantalla.show();
       delay(tiempo);
       contador++;
-      //nos salimos cuando hemos recorrido las filas de la cancion +1
+      //nos salimos cuando hemos recorrido las filas de la cancion +16
       if(contador==(NUMPASOS+16)){
-        start=false;
+        terminarJuego();
       }
     }// fin de start == true
 
@@ -95,3 +109,58 @@ void configurarMatriz(){
   }
 }
 
+void isrleft(){
+  //Serial.println("LEFT");
+  if(start){
+    if(pantalla.getPixelColor(0)==colorL){
+      puntos++;
+    }
+  }else{
+    reportarseOnline();
+  }
+}
+
+
+void isrup(){
+  //Serial.println("UP");
+  if(start){
+    if(pantalla.getPixelColor(16)==colorU){
+      puntos++;
+    }
+  }else{
+    reportarseOnline();
+  }
+}
+
+void isrright(){
+  //Serial.println("RIGHT");
+  if(start){
+    if(pantalla.getPixelColor(32)==colorR){
+      puntos++;
+    }
+  }else{
+    reportarseOnline();
+  }
+}
+
+void isrdown(){
+  Serial.println("DOWN");
+  if(start){
+    if(pantalla.getPixelColor(48)==colorD){
+      puntos++;
+    }
+  }else{
+    reportarseOnline();
+  }
+}
+
+void reportarseOnline(){
+  Serial.println(equipo);
+}
+
+void terminarJuego(){
+  Serial.println("PUNTOS DEL EQUIPO");
+  Serial.println(equipo +"," + puntos);
+  puntos=0;
+  start=false;
+}

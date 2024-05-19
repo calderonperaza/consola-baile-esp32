@@ -21,6 +21,7 @@ bool start=true;
 char equipo[]="PIKORO";
 volatile int puntos=0;
 int tiempo=800;
+unsigned long myTime=0;
 //OJO EL TAMAÑO NO ES DINAMICO SINO QUE DEBE EDITARSE
 // 16 en blanco antes y 16 despues mas los 15 pasos de la cancion
 #define MAXCANCION 47
@@ -110,7 +111,6 @@ void configurarMatriz(){
 }
 
 void isrleft(){
-  //Serial.println("LEFT");
   if(start){
     if(pantalla1.getPixelColor(0)==colorL){
       puntos++;
@@ -122,7 +122,6 @@ void isrleft(){
 
 
 void isrup(){
-  //Serial.println("UP");
   if(start){
     if(pantalla1.getPixelColor(16)==colorU){
       puntos++;
@@ -133,7 +132,6 @@ void isrup(){
 }
 
 void isrright(){
-  //Serial.println("RIGHT");
   if(start){
     if(pantalla1.getPixelColor(32)==colorR){
       puntos++;
@@ -144,7 +142,6 @@ void isrright(){
 }
 
 void isrdown(){
-  Serial.println("DOWN");
   if(start){
     if(pantalla1.getPixelColor(48)==colorD){
       puntos++;

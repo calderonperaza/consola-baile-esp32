@@ -17,6 +17,8 @@ uint32_t colorD=pantalla.Color(0, 0, 255); //color azul
 bool start=true;
 
 int tiempo=800;
+unsigned long myTime=0;
+
 //OJO EL TAMAÑO NO ES DINAMICO SINO QUE DEBE EDITARSE
 // 16 en blanco antes y 16 despues mas los 15 pasos de la cancion
 #define MAXCANCION 47
@@ -33,6 +35,7 @@ void setup(){
   configurarMatriz();
 }
 
+//loop empleando delay
 void loop(){
     pantalla.clear();
     pantalla.show();
@@ -97,3 +100,44 @@ void configurarMatriz(){
   }
 }
 
+
+//loop empleando millis en lugar del delay
+void loop(){
+    pantalla.clear();
+    pantalla.show();
+    if(start){
+      for(int i=0; i<16; i++){
+        for(int j=0; j<4; j++){
+          if(cancionBailada[contador+i][j]){
+            switch(j){
+              case 0:
+                pantalla.setPixelColor(i,colorL);
+                break;
+              case 1:
+                pantalla.setPixelColor(i+16,colorU);
+                break;
+              case 2:
+                pantalla.setPixelColor(i+32,colorR);
+                break;
+              case 3:
+                pantalla.setPixelColor(i+48,colorD);
+                break;
+            }
+          }
+        }
+      }
+      pantalla.show();
+      if(myTime==0){
+        myTime=millis();
+      }
+
+      if(millis()-myTime>tiempo){
+        contador++;
+        myTime=millis();
+      }
+      //nos salimos cuando hemos recorrido las filas de la cancion +1
+      if(contador==(NUMPASOS+16)){
+        start=false;
+      }
+    }// fin de start == true
+}

@@ -6,6 +6,11 @@
 //Debes colocar una resistencia de 10k
 //El voltaje + es de 3.3V
 
+volatile bool left = false;
+volatile bool up = false;
+volatile bool right = false;
+volatile bool down = false;
+
 void setup(){
     pinMode(LEFT,INPUT);
     pinMode(UP,INPUT);
@@ -19,23 +24,39 @@ void setup(){
 }
 
 void loop(){
+  if(left){
+    Serial.println("LEFT");
+    left = false;
+  }
+  if(up){
+    Serial.println("UP");
+    up = false;
+  }
+  if(right){
+    Serial.println("RIGHT");
+    right = false;
+  }
+  if(down){
+    Serial.println("DOWN");
+    down = false;
+  }
 
 }
 
 void isrleft(){
-  Serial.println("LEFT");
+  left = true;
 }
 
 void isrup(){
-  Serial.println("UP");
+  up = true;
 }
 
 void isrright(){
-  Serial.println("RIGHT");
+  right = true;
 }
 
 void isrdown(){
-  Serial.println("DOWN");
+  down = true;
 }
 
 

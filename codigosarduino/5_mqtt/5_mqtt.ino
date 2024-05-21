@@ -7,8 +7,8 @@
 #define LEFT 16
 char equipo[]="PIKORO";
 
-const char ssid[] = "ssiddelrouter";
-const char pass[] = "clavedelrouter";
+const char ssid[] = "MICROPROGRAMACION";
+const char pass[] = "12345678";
 
 WiFiClient net;
 MQTTClient client;
@@ -66,9 +66,9 @@ void loop() {
 
   //publicaremos un mensaje cuando se presione el boton izquierdo
   if(digitalRead(LEFT)==HIGH){
-    //client.publish("BAILE/EQUIPO", "LEFT");
+    //client.publish("BAILE/EQUIPOS", "LEFT");
     //publicamos el nombre del equipo
-    client.publish("BAILE/EQUIPO", equipo);
+    client.publish("BAILE/EQUIPOS", equipo);
     delay(1000);
   }
 

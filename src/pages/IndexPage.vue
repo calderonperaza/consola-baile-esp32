@@ -114,13 +114,13 @@ const delay = ref(1000)
 const cancion = new Audio('captainJack.mp3')
 const equipos = ref([
   { nombre: 'Namekusei', puntos: 0, online: true },
-  { nombre: 'Androides', puntos: 4, online: true },
+  { nombre: 'Androides', puntos: 0, online: true },
   { nombre: 'Ginyu', puntos: 0, online: true },
   { nombre: 'Dabura', puntos: 0, online: true },
-  { nombre: 'Tao Pai Pai', puntos: 126, online: true },
+  { nombre: 'Tao Pai Pai', puntos: 0, online: true },
   { nombre: 'Yamcha', puntos: 0, online: true },
   { nombre: 'Patrulla Roja', puntos: 0, online: true },
-  { nombre: 'Spopovich', puntos: 9, online: true },
+  { nombre: 'Spopovich', puntos: 0, online: true },
   { nombre: 'Yamu', puntos: 0, online: true }
 ])
 

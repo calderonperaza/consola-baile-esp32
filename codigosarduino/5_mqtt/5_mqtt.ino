@@ -7,8 +7,10 @@
 #define LEFT 16
 char equipo[]="PIKORO";
 
-const char ssid[] = "MICROPROGRAMACION";
-const char pass[] = "12345678";
+//const char ssid[] = "MICROPROGRAMACION";
+const char* ssid="MICROPROGRAMACION";
+//const char pass[] = "12345678";
+const char* pass="12345678";
 
 WiFiClient net;
 MQTTClient client;

@@ -113,15 +113,13 @@ const numPasos = ref(15)
 const delay = ref(1000)
 const cancion = new Audio('captainJack.mp3')
 const equipos = ref([
-  { nombre: 'Namekusei', puntos: 0, online: true },
-  { nombre: 'Androides', puntos: 0, online: true },
-  { nombre: 'Ginyu', puntos: 0, online: true },
-  { nombre: 'Dabura', puntos: 0, online: true },
-  { nombre: 'Tao Pai Pai', puntos: 0, online: true },
-  { nombre: 'Yamcha', puntos: 0, online: true },
-  { nombre: 'Patrulla Roja', puntos: 0, online: true },
-  { nombre: 'Spopovich', puntos: 0, online: true },
-  { nombre: 'Yamu', puntos: 0, online: true }
+  { nombre: 'BOBESPONJA', puntos: 0, online: true },
+  { nombre: 'PATRICIO', puntos: 0, online: true },
+  { nombre: 'CALAMARDO', puntos: 0, online: true },
+  { nombre: 'GARY', puntos: 0, online: true },
+  { nombre: 'DONCANGREJO', puntos: 0, online: true },
+  { nombre: 'ARENITA', puntos: 0, online: true },
+  { nombre: 'PLANTON', puntos: 0, online: true }
 ])
 
 // propiedad computada de equipos ordenados

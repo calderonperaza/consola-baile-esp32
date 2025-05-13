@@ -9,7 +9,7 @@
 
         <div class="row">
           <div class="col-4">
-            <div class="caption">Numero de pasos</div>
+            <div class="caption">Numero de leds</div>
             <q-input
               v-model.number="numPasos"
               type="number"
@@ -109,8 +109,8 @@ import { $mqtt } from 'vue-paho-mqtt'
 const $q = useQuasar()
 const colaMensajes = ref([])
 const colaMensajesOrdenados = computed(() => [...colaMensajes.value].reverse())
-const numPasos = ref(15)
-const delay = ref(1000)
+const numPasos = ref(60)
+const delay = ref(500)
 const cancion = new Audio('captainJack.mp3')
 const equipos = ref([
   { nombre: 'BOBESPONJA', puntos: 0, online: true },
@@ -138,23 +138,13 @@ function generarAleatorio () {
   // los valores aleatorios son: L, R, U y D
   // y lo guardamos en una cadena
   let cadena = ''
-  for (let i = 0; i < numPasos.value; i++) {
-    const aleatorio = Math.floor(Math.random() * 4)
-    switch (aleatorio) {
-      case 0:
-        cadena += 'L'
-        break
-      case 1:
-        cadena += 'R'
-        break
-      case 2:
-        cadena += 'U'
-        break
-      case 3:
-        cadena += 'D'
-        break
-    }
+  for (let i = 0; i < numPasos.value - 1; i++) {
+    cadena += 'R'
   }
+  const pos = Math.floor(Math.random() * numPasos.value - 1)
+  cadena = cadena.split('')
+  cadena[pos] = 'V'
+  cadena = cadena.join('')
   console.log(delay.value + ',' + cadena)
   $mqtt.publish('BAILE', delay.value + ',' + cadena, 'Qr')
   colaMensajes.value.push(delay.value + ',' + cadena)

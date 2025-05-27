@@ -119,7 +119,7 @@ const equipos = ref([
   { nombre: 'GARY', puntos: 0, online: true },
   { nombre: 'DONCANGREJO', puntos: 0, online: true },
   { nombre: 'ARENITA', puntos: 0, online: true },
-  { nombre: 'PLANTON', puntos: 0, online: true }
+  { nombre: 'PLANKTON', puntos: 0, online: true }
 ])
 
 // propiedad computada de equipos ordenados

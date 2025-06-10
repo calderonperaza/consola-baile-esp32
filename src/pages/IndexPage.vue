@@ -141,9 +141,11 @@ function generarAleatorio () {
   for (let i = 0; i < numPasos.value - 1; i++) {
     cadena += 'R'
   }
-  const pos = Math.floor(Math.random() * numPasos.value - 1)
+  const pos = Math.floor(Math.random() * (numPasos.value - 2))
   cadena = cadena.split('')
   cadena[pos] = 'V'
+  cadena[pos + 1] = 'V'
+  // pos = Math.floor(Math.random() * numPasos.value - 1)
   cadena = cadena.join('')
   console.log(delay.value + ',' + cadena)
   $mqtt.publish('BAILE', delay.value + ',' + cadena, 'Qr')
@@ -184,8 +186,10 @@ function procesarMensaje (mensaje) {
       const [nombre, puntos] = mensaje.split(',')
       const equipo = equipos.value.find((equipo) => equipo.nombre.toUpperCase() === nombre)
       if (equipo) {
-        equipo.puntos += parseInt(puntos)
-        equipo.online = true
+        if (puntos !== undefined && puntos !== null) {
+          equipo.puntos += parseInt(puntos)
+          equipo.online = true
+        }
       }
     } else {
       console.log('no incluye coma')
